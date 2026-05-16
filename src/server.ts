@@ -5,12 +5,27 @@ const server = express()
 //Routing
 server.get('/', (req, res) => {
 
-    const datos = [
-        {id: 1, nombre: 'Anto'},
-        {id:2, nombre: 'Juan'}
-    ]
+    res.json('Desde Get')
+})
 
-    res.json(datos)
+server.post('/', (req, res) => {
+
+    res.json('Desde Post')
+})
+
+server.put('/', (req, res) => {
+
+    res.json('Desde Put')
+})
+
+server.patch('/', (req, res) => {
+
+    res.json('Desde Patch')
+})
+
+server.delete('/', (req, res) => {
+
+    res.json('Desde Delete')
 })
 
 export default server
