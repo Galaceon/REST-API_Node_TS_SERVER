@@ -59,3 +59,20 @@ export const updateProduct = async (req: Request, res: Response) => {
 
     res.json({data: product})
 }
+
+export const updateAvailability = async (req: Request, res: Response) => {
+    const id = Number(req.params.id)
+    const product = await Product.findByPk(id)
+
+    if(!product) {
+        return res.status(404).json({
+            error:'Producto no Encontrado'
+        })
+    }
+
+    // Actualizar
+    await product.update(req.body)
+    await product.save()
+
+    res.json({data: product})
+}
