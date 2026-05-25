@@ -48,9 +48,9 @@ router.put('/:id',
     updateProduct
 )
 
-router.patch('/', updateAvailability)
+router.patch('/:id', updateAvailability)
 
-router.delete('/:id', (req, res) => {
+router.delete('/', (req, res) => {
 
     res.json('Desde Delete')
 })
