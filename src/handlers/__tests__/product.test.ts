@@ -18,8 +18,8 @@ describe('POST /api/products', () => {
         expect(response.body).toHaveProperty('errors')
         expect(response.body.errors).toHaveLength(4)
 
-        expect(response.status).toBe(404)
-        expect(response.body.errors).toHaveLength(2)
+        expect(response.status).not.toBe(404)
+        expect(response.body.errors).not.toHaveLength(2)
     })
 
     it('should create a new product', async () => {
@@ -36,5 +36,19 @@ describe('POST /api/products', () => {
         expect(response.body).not.toHaveProperty('error')
 
         console.log(response.status)
+    })
+
+    it('should validate that the product is a number and price is greater than 0', async () => {
+        const response = await supertest(server).post('/api/products').send({
+            name: 'Monitor Curvo',
+            price: "hola"
+        })
+
+        expect(response.status).toBe(400)
+        expect(response.body).toHaveProperty('errors')
+        expect(response.body.errors).toHaveLength(2)
+
+        expect(response.status).not.toBe(404)
+        expect(response.body.errors).not.toHaveLength(4)
     })
 })
