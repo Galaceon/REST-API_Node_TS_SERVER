@@ -2,17 +2,22 @@ import supertest from 'supertest'
 import server, { connectDB } from '../../server'
 import db from '../../config/db'
 
+let request: ReturnType<typeof supertest>
+
+beforeAll(async () => {
+    await connectDB()
+    request = supertest(server)
+})
+
+afterAll(async () => {
+    await db.close()
+    // Esperar un poco para que todos los handles se cierren
+    await new Promise(resolve => setTimeout(resolve, 100))
+})
+
 describe('POST /api/products', () => {
-    beforeAll(async () => {
-        await connectDB()
-    })
-
-    afterAll(async () => {
-        await db.close()
-    })
-
     it('should display validation errors', async () => {
-        const response = await supertest(server).post('/api/products').send({})
+        const response = await request.post('/api/products').send({})
 
         expect(response.status).toBe(400)
         expect(response.body).toHaveProperty('errors')
@@ -23,7 +28,7 @@ describe('POST /api/products', () => {
     })
 
     it('should create a new product', async () => {
-        const response = await supertest(server).post('/api/products').send({
+        const response = await request.post('/api/products').send({
             name : "Taza Gaming",
             price : 50
         })
@@ -39,7 +44,7 @@ describe('POST /api/products', () => {
     })
 
     it('should validate that the product is a number and price is greater than 0', async () => {
-        const response = await supertest(server).post('/api/products').send({
+        const response = await request.post('/api/products').send({
             name: 'Monitor Curvo',
             price: "hola"
         })
@@ -50,5 +55,23 @@ describe('POST /api/products', () => {
 
         expect(response.status).not.toBe(404)
         expect(response.body.errors).not.toHaveLength(4)
+    })
+})
+
+describe('GET /api/products', () => {
+    it('should check if API products url exists', async () => {
+        const response = await request.get('/api/products')
+        expect(response.status).not.toBe(404)
+    })
+
+    it('GET a JSON response with products', async () => {
+        const response = await request.get('/api/products')
+
+        expect(response.status).toBe(200)
+        expect(response.headers['content-type']).toMatch(/json/)
+        expect(response.body).toHaveProperty('data')
+        expect(response.body.data).toHaveLength(1)
+
+        expect(response.body).not.toHaveProperty('errors')
     })
 })
