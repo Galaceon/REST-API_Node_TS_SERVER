@@ -211,9 +211,7 @@ describe('DELETE /api/products/:id', () => {
 
         expect(response.status).toBe(404)
     })
-})
 
-describe('DELETE /api/products/:id', () => {
     it('Should check a valid ID', async () => {
         const response = await request.delete('/api/products/not-valid-url').send({})
 
