@@ -28,7 +28,34 @@ const router = Router()
  *                      type: boolean
  *                      description: The Product Availability
  *                      example: true
+ */
+
+/**
+ * @swagger
+ * /api/products:
+ *      get:
+ *          summary: Get a list of products
+ *          tags:
+ *              - Products
+ *          description: Return a list of products
+ *          responses: 
+ *              200:
+ *                  description: Successful Response
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#components/schemas/Product'
  * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+
+
  */
 
 //Routing

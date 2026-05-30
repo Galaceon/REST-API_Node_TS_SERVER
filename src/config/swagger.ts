@@ -9,6 +9,7 @@ const options : swaggerJSDoc.Options = {
                 description: 'API operations related to products'
             }
         ],
+        
         info: {
             title: 'REST API Node.js / Express / TypeScrypt',
             version: "1.0.0",
